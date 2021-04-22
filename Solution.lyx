@@ -216,6 +216,119 @@ answer E - both process B and the main process finishing their code successfully
  and both of them printing the end of code line.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\bar under
+Part 2
+\end_layout
+
+\begin_layout Enumerate
+***i think the answer is true, but i'm not sure (mainly because i ran the
+ program a couple of times and haven't saw that outcome //insert raise hand
+ emoji)***
+\end_layout
+
+\begin_layout Enumerate
+***i think the answer is true, but i'm not sure (mainly because i ran the
+ program a couple of times and haven't saw that outcome //insert raise hand
+ emoji)***
+\end_layout
+
+\begin_layout Enumerate
+no, because i think we don't get signal143.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\bar under
+Question 2
+\end_layout
+
+\begin_layout Enumerate
+when the child process starts to run, his/hers 
+\begin_inset Formula $FDT$
+\end_inset
+
+ contains the file descriptor of 
+\begin_inset Formula $myfile$
+\end_inset
+
+ in locations 0 and 1 but in location 2 the standard_error descriptor is
+ still there (meaning isn't closed).
+ that means that when the child executes the 
+\begin_inset Formula $dup(fd)$
+\end_inset
+
+ command it puts the 
+\begin_inset Formula $fd$
+\end_inset
+
+ in the first open slot - witch may by somewhere after slot num 2 (which
+ still has its standard_error descriptor).
+ then the 
+\begin_inset Formula $scanf$
+\end_inset
+
+ reads form 
+\begin_inset Formula $myfile$
+\end_inset
+
+ (the parent replaced the standard input to fd) - so now 
+\begin_inset Formula $s$
+\end_inset
+
+ contains the first 100 bytes in 
+\begin_inset Formula $myfile$
+\end_inset
+
+ and prints them in line 18 to the standard_error - appears on the screen.
+\end_layout
+
+\begin_layout Enumerate
+first line 
+\begin_inset Formula $"haha"$
+\end_inset
+
+ caused by line 7 in the code - we simply writing to the file that we created.
+ second line 
+\begin_inset Formula $"hello"$
+\end_inset
+
+ - as described in question 1, the FDT of the child contains the value of
+ fd in slots 0 and 1 - meaning that when we executing line 17 we are printing
+ to 
+\begin_inset Formula $myfile$
+\end_inset
+
+ and not to the standard_output.
+ the third and last line would be 
+\begin_inset Formula $"Fatherfinished"$
+\end_inset
+
+ - again, the FDT contains in slots 0 and 1 the val of fd and thus we are
+ printing to 
+\begin_inset Formula $myfile$
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Enumerate
 
 \end_layout
