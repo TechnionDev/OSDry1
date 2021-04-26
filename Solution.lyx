@@ -5,6 +5,23 @@
 \save_transient_properties true
 \origin unavailable
 \textclass article
+\begin_preamble
+\usepackage{fontspec}
+\usepackage{verbatim}
+
+
+\usepackage{xcolor}
+\pagecolor[rgb]{0.17,0.17,0.17} %black
+\color[rgb]{1,1,1} %grey
+
+\newfontfamily\mylistingsfont{Space Mono}
+\definecolor{lbcolor}{rgb}{0.2,0.2,0.2}
+\usepackage[CJK, Latin, Thai, Sinhala, Malayalam, DominoTiles, MahjongTiles]{ucharclasses}
+\usepackage{wasysym}
+\newfontface\emoji{Times}
+\usepackage{xltxtra}
+\usepackage{xelatexemoji}
+\end_preamble
 \use_default_options true
 \maintain_unincluded_children false
 \language english
@@ -16,7 +33,7 @@
 \font_typewriter "default" "default"
 \font_math "auto" "auto"
 \font_default_family default
-\use_non_tex_fonts false
+\use_non_tex_fonts true
 \font_sc false
 \font_osf false
 \font_sf_scale 100 100
@@ -29,9 +46,10 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
+\spacing single
 \use_hyperref false
 \papersize default
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -44,6 +62,7 @@
 \use_package undertilde 1
 \cite_engine basic
 \cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -55,6 +74,10 @@
 \shortcut idx
 \color #008000
 \end_index
+\leftmargin 1.5cm
+\topmargin 1cm
+\rightmargin 1cm
+\bottommargin 1cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -66,6 +89,7 @@
 \papercolumns 1
 \papersides 1
 \paperpagestyle default
+\listings_params "basicstyle={\mylistingsfont},language={C++},backgroundcolor={\color{lbcolor}},showstringspaces=false"
 \tracking_changes false
 \output_changes false
 \html_math_output 0
@@ -75,147 +99,511 @@
 
 \begin_body
 
-\begin_layout Standard
+\begin_layout Title
 
 \series bold
 \bar under
 Question 1
 \end_layout
 
-\begin_layout Standard
+\begin_layout Part
+\begin_inset ERT
+status open
 
-\series bold
-\bar under
-Part 1
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Question
+\end_layout
+
+\begin_layout Standard
+In this part (and the next one), we'll assume that the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+status
+\end_layout
+
+\end_inset
+
+ contains the return value of the process (without extra information).
+ This was asked on the Piazza and a TA said that the meaning is 
+\begin_inset Quotes eld
+\end_inset
+
+what is the exit code
+\begin_inset Quotes erd
+\end_inset
+
+ and not the actual value of 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+status
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Enumerate
-answer B - after the first fork, process A starts executing its code (the
- 
-\begin_inset Formula $ProcessA$
+answer B - 
+\begin_inset listings
+lstparams "showstringspaces=false"
+inline true
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Quotes eld
+\end_inset
+
+process A
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ will be printed either once or not at all.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Process A never reaches the second printf, no matter what.
+ This is because the X is private to the process and not shared.
+ So in the flow that reaches ProcessA, X is never changed from 
+\begin_inset Formula $1$
+\end_inset
+
+ to 
+\begin_inset Formula $0$
+\end_inset
+
+.
+ In the second subprocess created, p1 already contains the pid from the
+ first fork (the process that runs ProcessA).
+ Only the flow that runs ProcessB can affect the execution of ProcessA's
+ process.
+ So either ProcessB will kill ProcessA before the first print, or it will
+ kill it after.
+ Either way, ProcessA will always be killed with signal 9 (mean\SpecialChar endofsentence
+ing exit
+ of 137).
+\end_layout
+
+\begin_layout Standard
+after the first fork, process A starts executing its code (the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+ProcessA
+\end_layout
+
 \end_inset
 
  function) and prints ones the line 
-\begin_inset Formula $”ProcessA"$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+ProcessA
+\end_layout
+
 \end_inset
 
  right before entering to an infinite loop.
  the second child has the 
-\begin_inset Formula $pid$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+pid
+\end_layout
+
 \end_inset
 
  of the first child from his parent process, and sands a 
-\begin_inset Formula $SIGKILL$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+SIGKILL
+\end_layout
+
 \end_inset
 
- command to process A (how is in a infinite loop) and stops him form reaching
- to the second 
-\begin_inset Formula $printf$
+ command to process A and kills 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+printf
+\end_layout
+
 \end_inset
 
  in the 
-\begin_inset Formula $ProcessA$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+ProcessA
+\end_layout
+
 \end_inset
 
  function.
  note: the fact that process B changes his own variable 
-\begin_inset Formula $X$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+X
+\end_layout
+
 \end_inset
 
  to 0, dose not effect the value of process A - witch still stays 1.
  
 \end_layout
 
+\end_deeper
 \begin_layout Enumerate
-answer A - like explained in question 1 - the second child has the 
-\begin_inset Formula $pid$
-\end_inset
+answer A - 
+\begin_inset listings
+inline true
+status open
 
- of the first child from his parent process - thus the value of 
-\begin_inset Formula $p1$
-\end_inset
+\begin_layout Plain Layout
 
- in process B is the 
-\begin_inset Formula $pid$
-\end_inset
-
- of process A.
- when process B executes the 
-\begin_inset Formula $killAll$
-\end_inset
-
- function a 
-\begin_inset Formula $SIGKILL$
-\end_inset
-
- is sand to process A and terminates it.
- thus his exit value is 9 (or more precise 
-\begin_inset Formula $9+128$
-\end_inset
-
- = 137) and not 1.
- the exit value of the process B is 3 BUT the value of 
-\begin_inset Formula $status$
-\end_inset
-
- is an encoding of the exit status and some more information about the process
- (which can be printed using macros in 
-\begin_inset Formula $sys/wait.h$
-\end_inset
-
-).
+status: 1
 \end_layout
 
-\begin_layout Enumerate
-answer B - when process B executes the 
-\begin_inset Formula $killAll$
 \end_inset
 
- function a 
-\begin_inset Formula $SIGKILL$
-\end_inset
+ shall never be printed.
+\end_layout
 
- is sand to process A and terminates it.
- thus his exit value is 9 (or more precise 
+\begin_deeper
+\begin_layout Standard
+Like explained in question 1 - ProcessA will always be killed by ProcessB.
+ Thus it exits on signal 9 (or more precisely exit code 
 \begin_inset Formula $9+128=137$
 \end_inset
 
-) and not 1 + the value of X isn't changed and the process executes a infinite
- loop until being terminated.
+) and never goes past the infinite loop to exit code 1.
 \end_layout
 
+\begin_layout Standard
+The exit value of the process B is 3 because after 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+ProcessB
+\end_layout
+
+\end_inset
+
+ returns, it goes to the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+printf(
+\begin_inset Quotes eld
+\end_inset
+
+end
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+
+ and the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+return 3
+\end_layout
+
+\end_inset
+
+ in the main.
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
-answer A - when the second fork is being made the 
-\begin_inset Formula $PCB$
-\end_inset
+answer C - 
+\begin_inset listings
+inline true
+status open
 
- of the main process is being copied to process B - except the value of
- the result of the fork.
- the value of 
-\begin_inset Formula $p2$
-\end_inset
+\begin_layout Plain Layout
 
- is 0 in process B, and 
-\begin_inset Formula $pid-b$
-\end_inset
-
- in the main process.
- thus when process B executes the 
-\begin_inset Formula $killAll$
-\end_inset
-
- function, it sands a 
-\begin_inset Formula $SIGKILL$
-\end_inset
-
- signal to process num 0 - and not to himself.
+status: 137
 \end_layout
 
+\end_inset
+
+ will be printed exactly once.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+When 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+ProcessB()
+\end_layout
+
+\end_inset
+
+ executes the 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+killAll()
+\end_layout
+
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ function a 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+SIGKILL
+\end_layout
+
+\end_inset
+
+ is sent to the process running 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+ProcessA()
+\end_layout
+
+\end_inset
+
+ and terminates it.
+ Thus its exit value is 
+\begin_inset Formula $128+9=137$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The main process will wait for twice for children to finish (all its children).
+ Exactly one will be a process that died with exit code 
+\begin_inset Formula $137$
+\end_inset
+
+.
+ The second (as mentioned before) existed with code 
+\begin_inset Formula $3$
+\end_inset
+
+ (returned from main).
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
-answer E - both process B and the main process finishing their code successfully
- and both of them printing the end of code line.
+answer A - 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+status: 143
 \end_layout
 
+\end_inset
+
+ will never be printed.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The flow that reaches 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+ProcessB()
+\end_layout
+
+\end_inset
+
+ is only the one from the second fork (the child, not main).
+\end_layout
+
+\begin_layout Standard
+The child's 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+fork()
+\end_layout
+
+\end_inset
+
+ call returns 0.
+ So 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p2 == 0
+\end_layout
+
+\end_inset
+
+.
+ So no process will get signal 
+\begin_inset Formula $15$
+\end_inset
+
+ and the wait in the main process will not get a status of 
+\begin_inset Formula $15+128$
+\end_inset
+
+ as exit code.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+answer E - 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Quotes eld
+\end_inset
+
+The end
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ will be printed exactly twice.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Both process B and the main process finishing their code successfully and
+ both of them printing the end of code line (which is outside the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+if/else
+\end_layout
+
+\end_inset
+
+ statements.
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 \begin_inset Separator plain
 \end_inset
@@ -223,29 +611,200 @@ answer E - both process B and the main process finishing their code successfully
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Part
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
 
 \series bold
-\bar under
-Part 2
+True
+\series default
+ (sometimes)
 \end_layout
 
+\begin_deeper
+\begin_layout Standard
+In theory, the process from the first fork will not start for a while, while
+ the process from the second fork will start and print the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Quotes eld
+\end_inset
+
+process B
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ message.
+ Right after the print, the OS may decide to let the process from the first
+ fork to run (finally) and 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Quotes eld
+\end_inset
+
+process A
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ will be printed.
+\end_layout
+
+\begin_layout Standard
+This ofc doesn't happen in every run.
+ It is actually much more likely that the printing order will be the other
+ way around.
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
-***i think the answer is true, but i'm not sure (mainly because i ran the
- program a couple of times and haven't saw that outcome //insert raise hand
- emoji)***
+
+\series bold
+True
+\series default
+.
 \end_layout
 
+\begin_deeper
+\begin_layout Standard
+In every flow (like we mentioned before), there are two prints of 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Quotes eld
+\end_inset
+
+the end
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ One of them is printed in the process of the second fork, the one running
+ 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+ProcessB
+\end_layout
+
+\end_inset
+
+ and another flow from the main process.
+ In the flow of the main process, the end message is only printed after
+ both subprocesses have finished and the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+status: 137
+\end_layout
+
+\end_inset
+
+ was printed.
+\end_layout
+
+\end_deeper
 \begin_layout Enumerate
-***i think the answer is true, but i'm not sure (mainly because i ran the
- program a couple of times and haven't saw that outcome //insert raise hand
- emoji)***
+
+\series bold
+False
+\series default
+.
 \end_layout
 
-\begin_layout Enumerate
-no, because i think we don't get signal143.
+\begin_deeper
+\begin_layout Standard
+Because the line 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+status: 143
 \end_layout
 
+\end_inset
+
+ is never ever printed.
+ But even is 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+p2
+\end_layout
+
+\end_inset
+
+ was not 
+\begin_inset Formula $0$
+\end_inset
+
+ when 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+killAll()
+\end_layout
+
+\end_inset
+
+ (though it is always) then the process would self destruct and process
+ A will stay in an infinite loop, which means that the main process will
+ keep waiting forever on the second wait.
+ Either way, can't both appear in the same run let alone one be before the
+ other.
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 \begin_inset Separator plain
 \end_inset
@@ -253,11 +812,11 @@ no, because i think we don't get signal143.
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Section
 
 \series bold
 \bar under
-Question 2
+Question
 \end_layout
 
 \begin_layout Enumerate
@@ -329,7 +888,10 @@ first line
 .
 \end_layout
 
-\begin_layout Enumerate
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
 
 \end_layout
 
