@@ -16,11 +16,9 @@
 
 \newfontfamily\mylistingsfont{Space Mono}
 \definecolor{lbcolor}{rgb}{0.2,0.2,0.2}
-\usepackage[CJK, Latin, Thai, Sinhala, Malayalam, DominoTiles, MahjongTiles]{ucharclasses}
 \usepackage{wasysym}
 \newfontface\emoji{Times}
 \usepackage{xltxtra}
-\usepackage{xelatexemoji}
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
@@ -47,7 +45,16 @@
 \index_command default
 \paperfontsize default
 \spacing single
-\use_hyperref false
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
 \papersize default
 \use_geometry true
 \use_package amsmath 1
@@ -77,7 +84,7 @@
 \leftmargin 1.5cm
 \topmargin 1cm
 \rightmargin 1cm
-\bottommargin 1cm
+\bottommargin 2cm
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -87,7 +94,7 @@
 \quotes_style english
 \dynamic_quotes 0
 \papercolumns 1
-\papersides 1
+\papersides 2
 \paperpagestyle default
 \listings_params "basicstyle={\mylistingsfont},language={C++},backgroundcolor={\color{lbcolor}},showstringspaces=false"
 \tracking_changes false
@@ -820,36 +827,92 @@ Question
 \end_layout
 
 \begin_layout Enumerate
-when the child process starts to run, his/hers 
-\begin_inset Formula $FDT$
+When the child process starts to run, his/hers 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+FDT
+\end_layout
+
 \end_inset
 
  contains the file descriptor of 
-\begin_inset Formula $myfile$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+myfile
+\end_layout
+
 \end_inset
 
  in locations 0 and 1 but in location 2 the standard_error descriptor is
  still there (meaning isn't closed).
  that means that when the child executes the 
-\begin_inset Formula $dup(fd)$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+dup(fd)
+\end_layout
+
 \end_inset
 
  command it puts the 
-\begin_inset Formula $fd$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+fd
+\end_layout
+
 \end_inset
 
  in the first open slot - witch may by somewhere after slot num 2 (which
  still has its standard_error descriptor).
  then the 
-\begin_inset Formula $scanf$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+scanf
+\end_layout
+
 \end_inset
 
  reads form 
-\begin_inset Formula $myfile$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+myfile
+\end_layout
+
 \end_inset
 
  (the parent replaced the standard input to fd) - so now 
-\begin_inset Formula $s$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+s
+\end_layout
+
 \end_inset
 
  contains 
@@ -872,7 +935,15 @@ haha
 \end_inset
 
  read from 
-\begin_inset Formula $myfile$
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+myfile
+\end_layout
+
 \end_inset
 
  and prints them in line 18 to the standard_error - which appears on the
@@ -880,34 +951,535 @@ haha
 \end_layout
 
 \begin_layout Enumerate
-first line 
-\begin_inset Formula $"haha"$
+First line 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+"haha"
+\end_layout
+
 \end_inset
 
- caused by line 7 in the code - we simply writing to the file that we created.
- second line 
-\begin_inset Formula $"hello"$
+ caused by line 
+\begin_inset Formula $5$
 \end_inset
 
- - as described in question 1, the FDT of the child contains the value of
- fd in slots 0 and 1 - meaning that when we executing line 17 we are printing
- to 
-\begin_inset Formula $myfile$
+ in the code - we simply write to the file that we created.
+ Second line 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+"hello"
+\end_layout
+
 \end_inset
 
- and not to the standard_output.
- the third and last line would be 
-\begin_inset Formula $"Fatherfinished"$
+ - as described in question 1, the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+FDT
+\end_layout
+
 \end_inset
 
- - again, the FDT contains in slots 0 and 1 the val of fd and thus we are
- printing to 
-\begin_inset Formula $myfile$
+ of the child contains the value of fd in slots 
+\begin_inset Formula $0$
+\end_inset
+
+ and 
+\begin_inset Formula $1$
+\end_inset
+
+ - meaning that when we execute line 
+\begin_inset Formula $17$
+\end_inset
+
+ we are print to 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+myfile
+\end_layout
+
+\end_inset
+
+ and not to 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+stdout
+\end_layout
+
 \end_inset
 
 .
 \end_layout
 
+\begin_deeper
+\begin_layout Standard
+The third and last line would be 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+"Father finished"
+\end_layout
+
+\end_inset
+
+ - again, the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+FDT
+\end_layout
+
+\end_inset
+
+ contains in slots 
+\begin_inset Formula $0$
+\end_inset
+
+ and 
+\begin_inset Formula $1$
+\end_inset
+
+ the value of 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+fd
+\end_layout
+
+\end_inset
+
+, thus we print to 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+myfile
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+We'll note that the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+scanf
+\end_layout
+
+\end_inset
+
+ on line 
+\begin_inset Formula $16$
+\end_inset
+
+ advanced the position in the file so the next print will not override the
+ 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\end_inset
+
+ already in the file.
+\end_layout
+
+\begin_layout Standard
+So the content of the file would be
+\begin_inset listings
+lstparams "language={C++},showstringspaces=false"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\begin_layout Plain Layout
+
+hello
+\end_layout
+
+\begin_layout Plain Layout
+
+Father finished
+\end_layout
+
+\end_inset
+
+And a newline at the end.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+The runtime would be faster due to two less syscalls.
+ Regarding the content, it would also be the same.
+ The 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+scanf
+\end_layout
+
+\end_inset
+
+ would return with 
+\begin_inset Formula $0$
+\end_inset
+
+ arguments read (due to 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+EOF
+\end_layout
+
+\end_inset
+
+ encounterd) and the next write would be after the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\end_inset
+
+ that was printed before (and the rest is the same ofc).
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The output would be the same because the fd(s) assignments would be the
+ same.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+The output, the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+myfile
+\end_layout
+
+\end_inset
+
+'s content and (maybe) the runtime would be different.
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+The output - Because the printing of the read
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\end_inset
+
+ will now be to 
+\begin_inset Formula $3$
+\end_inset
+
+ (which would be our file) and not to the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+stderr
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The file's content - Again, it would now have an extra 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\end_inset
+
+ after the 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+hello
+\end_layout
+
+\end_inset
+
+.
+ So now it's
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\begin_layout Plain Layout
+
+hello
+\end_layout
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\begin_layout Plain Layout
+
+Father finished
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The runtime - A bit more complicated and a finer point.
+ Assuming that printing to the screen doesn't use the disk, then printing
+ to a file is slower.
+ This ofc isn't always true.
+ An SSD for example usually write in a 
+\begin_inset Formula $4KB$
+\end_inset
+
+ chunks and the OS/DRAM (DRAM of the SSD, assuming it even has DRAM) might
+ cache the content.
+ Anyways, the runtime is likely slower though not always and probably not
+ noticable and maybe not even measurable.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Yes, except output.
+ There will be an extra 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+printf
+\end_layout
+
+\end_inset
+
+ in the child (
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+wait(NULL)
+\end_layout
+
+\end_inset
+
+ will return immedietely because there are no pending children)
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+Output - Same because 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+printf
+\end_layout
+
+\end_inset
+
+ doesn't print to screen but to 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+myfile
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Conrent of 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+myfile
+\end_layout
+
+\end_inset
+
+ - there will be an extra print before the child returns so now the file
+ content's will be
+\begin_inset listings
+inline false
+status open
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\begin_layout Plain Layout
+
+hello
+\end_layout
+
+\begin_layout Plain Layout
+
+haha
+\end_layout
+
+\begin_layout Plain Layout
+
+Father finished
+\end_layout
+
+\begin_layout Plain Layout
+
+Father finished
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The runtime will likely be increased - again, many assumptions here but
+ the caching of 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+std
+\end_layout
+
+\end_inset
+
+ will not take effect because I think it usually commits the changes when
+ a 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+newline
+\end_layout
+
+\end_inset
+
+ is encountered.
+ And there are no two consecurive 
+\begin_inset listings
+inline true
+status open
+
+\begin_layout Plain Layout
+
+std
+\end_layout
+
+\end_inset
+
+ prints in the same process.
+ Still, we're writing an extra line so this would take an extra syscall
+ which take extra time.
+\end_layout
+
+\end_deeper
 \begin_layout Standard
 \begin_inset Separator plain
 \end_inset
